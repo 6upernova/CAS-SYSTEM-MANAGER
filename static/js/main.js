@@ -399,10 +399,12 @@ editMemberBtns.forEach(function(editMemberBtn) {
     rows.forEach(function (row) {
       row.addEventListener("click", function () {
         // Obtiene el ID de la fila
-        var rowId = row.getAttribute("data-row-id");
+        if (event.target.tagName.toLowerCase() !== 'button') {
+          var rowId = row.getAttribute("data-row-id");
 
-        // Redirige a la página del evento con el ID
-        window.location.href = "/event/" + rowId;
+          // Redirige a la página del evento con el ID
+          window.location.href = "/event/" + rowId;
+        }
       });
     });
   });
