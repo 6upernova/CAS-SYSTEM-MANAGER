@@ -387,5 +387,25 @@ editMemberBtns.forEach(function(editMemberBtn) {
         console.log('Nuevo valor:', newText);
     });
 });
-})()
+})();
+
+(function(){
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    // Obtén todas las filas de la tabla
+    var rows = document.querySelectorAll("#eventsTable tbody tr");
+
+    // Para cada fila, agrega un listener de clic
+    rows.forEach(function (row) {
+      row.addEventListener("click", function () {
+        // Obtiene el ID de la fila
+        var rowId = row.getAttribute("data-row-id");
+
+        // Redirige a la página del evento con el ID
+        window.location.href = "/event/" + rowId;
+      });
+    });
+  });
+
+})();
 

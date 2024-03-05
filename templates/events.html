@@ -34,7 +34,7 @@
       </div>
     </form>
     <div class="table-responsive data-editable" style="border-radius: 10px; overflow: hidden;">
-      <table id="editableTable" class="table table-hover ">
+      <table id="eventsTable" class="table table-hover ">
         <thead style="vertical-align: middle;">
           <tr>
             <th scope="col">Nombre</th>
@@ -47,11 +47,13 @@
         </thead>
         <tbody style="vertical-align: middle;" >
           {% for event in events %}
-          <tr data-row-id="1">
+          <tr data-row-id="{{ event['id'] }}">
+            <a href="/event/{{event['id']}}" >
             <td >{{ event['name'] }}</td>
             <td > {{ event['date'] }}</td>
             <td> {{ event['place'] }}</td>
-            <td> ${{ event['card_price'] }}</td>        
+            <td> ${{ event['card_price'] }}</td>
+            </a>        
             <td style="padding-top: 10px;"> <!-- Actions column -->
               <form action="/delete_event/{{ event['id'] }}" method="post" style="display: inline-block;">
                   <button type="submit" class="btn btn-outline-danger btn-sm" style="background-color: transparent;  vertical-align: middle;" onclick="return confirm('Una vez borrado no se podrán recuperar los datos del evento. ¿Desea borrarlo sabiendo esto?')">
