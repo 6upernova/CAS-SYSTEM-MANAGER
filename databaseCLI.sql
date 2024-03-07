@@ -36,7 +36,9 @@ CREATE TABLE tables (
     number INTEGER,
     id INTEGER,
     cant_guest INTEGER,
-    PRIMARY KEY("id" AUTOINCREMENT)
+    guests_of INTEGER,
+    PRIMARY KEY("id" AUTOINCREMENT),
+    FOREIGN KEY("guests_of") REFERENCES "students" ("id")
    
 );
 
