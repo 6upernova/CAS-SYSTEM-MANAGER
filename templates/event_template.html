@@ -24,40 +24,92 @@
     </div>
     
 
-<section class="section dashboard">
+    <section class="section dashboard">
 
     <!--Search bar -->
     <div class="col-lg-12">
-        <form action="{{ url_for('events') }}" method="GET" class="mb-3">
-          <div class="input-group">
-            <input type="text" name="query" class="form-control" placeholder="Buscar evento por nombre" value="{{query}}">
-            <button type="submit" class="btn btn-primary">Buscar</button>
-          </div>
-        </form>
+      <form action="{{ url_for('events') }}" method="GET" class="mb-3">
+        <div class="input-group">
+          <input type="text" name="query" class="form-control" placeholder="Buscar evento por nombre" value="{{query}}">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+      </form>
     </div>
 
-    <!--Tables-->
-    {% for grade in grades %}
-    <div class="table-responsive data-editable" style="border-radius: 10px; overflow: hidden;">
-        <table id="editableTable" class="table table-hover ">
-            <caption>{{grade['name']}}</caption>
-            <thead style="vertical-align: middle;">
-                <tr>
-                    <th scope="col">Nombre egresado</th>
-                    <th scope="col">Invitados</th>
-                    <th scope="col">Colocados</th>
-                    <th scope="col">Veg</th>
-                    <th scope="col">Cel</th>
-                    <th scope="col">Entregadas</th>
-                    <th scope="col">Cobradas</th>
-                    <th scope="col">Mesa N°</th>
-                </tr>
-                
-            </thead>
-        </table>
-    </div>
-    {% endfor %}    
-</section>
+      <div class="row">
+        <div class="accordion" id="sectionsAccordion">
+          <!-- Section Accordion -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="accordionHeader">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapse">
+                Curso Mameluco
+              </button>
+            </h2>
+            <div id="collapse" class="accordion-collapse collapse show" aria-labelledby="accordionHeader" data-bs-parent="#sectionsAccordion">
+              <div class="accordion-body p-3">
+                <div class="row gy-3">
+                  <!-- Left side columns -->
+                  <div class="col-lg-8">
+                    <div class="row">
+
+                    <!--Tables-->
+                    {% for grade in grades %}
+                    <div class="table-responsive data-editable" style="border-radius: 10px; overflow: hidden;">
+                        <table id="editableTable" class="table table-hover ">
+                            <caption>{{grade['name']}}</caption>
+                            <thead style="vertical-align: middle;">
+                                <tr>
+                                    <th scope="col">Nombre egresado</th>
+                                    <th scope="col">Invitados</th>
+                                    <th scope="col">Colocados</th>
+                                    <th scope="col">Veg</th>
+                                    <th scope="col">Cel</th>
+                                    <th scope="col">Entregadas</th>
+                                    <th scope="col">Cobradas</th>
+                                    <th scope="col">Mesa N°</th>
+                                </tr>
+                                
+                            </thead>
+                        </table>
+                    </div>
+                    {% endfor %}    
+                    <!-- Add content here -->
+                    </div><!-- End Row -->
+                  </div><!-- End Left side columns -->
+                  <!-- Right side columns -->
+                  <div class="col-lg-4">
+                    <!-- Recent Activity -->
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">TODO list <span>| Today</span></h5>
+                        <div class="activity">
+                          {% for habit in habits %}
+                          {% if habit['type'] == 'Good' %}
+                          <div class="activity-item d-flex">
+                            <div class="timeLeft">{{ habit['show_at'] }}</div>
+                            <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
+                            <div class="activity-content d-flex justify-content-between">
+                              {% if habit['section_title'] == 'Completed' %}
+                              <p class="text-decoration-line-through">{{ habit['notes'] }}  ({{ habit['current_value'] }}/{{ habit['value'] }})</p>
+                              {% else %}
+                              <p class="">{{ habit['notes'] }}   ({{ habit['current_value'] }}/{{ habit['value'] }})</p>
+                              {% endif %}
+                            </div>
+                          </div><!-- End activity item-->
+                          {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div><!-- End Recent Activity -->
+                  </div><!-- End Right side columns -->
+                </div>
+              </div><!-- End Accordion -->
+            </div>
+          </div><!-- End row -->
+        </div><!-- End accordion -->
+      </div>
+    </section>
+
 
 <!--Create Grade Modal-->
 <div class="modal fade" id="createNewEvent" tabindex="-1" aria-labelledby="createNewEventLabel" aria-hidden="true">
