@@ -74,7 +74,7 @@ def create_new_event():
 
 @app.route('/event/<event_id>')
 def show_event(event_id):
-    
+    # fetch data
     result = db.execute("SELECT * FROM events WHERE id = :event_id", event_id =event_id)
     event = result[0]
     grades = db.execute("SELECT * FROM grade WHERE event_id = :event_id ", event_id = event_id )
@@ -91,6 +91,30 @@ def show_event(event_id):
     
     
     return render_template('event_template.html', event = event, grades = grades, students_by_grade = students_by_grade, tables_by_student = tables_by_student )
+
+@app.route('/create_new_grade/<event_id>', methods=['POST'])
+def create_new_grade(event_id):
+    name = request.form['gradeName']
+    size = int(request.form['gradeSize'])
+
+    db.execute("INSERT INTO grade(event_id, name, size)"
+                "VALUES (:event_id, :name, :size )",
+                event_id = event_id, name = name, size = size)
+    
+    result = db.execute("SELECT last_insert_rowid() as id")
+    result = result[0]
+    grade_id = result['id']
+
+    for i in range(size):
+        db.execute("INSERT INTO students (grade_id) VALUES (:grade_id)",
+                    grade_id=grade_id )
+    
+    return redirect(url_for('show_event', event_id=event_id))
+
+
+
+
+    
 
 
 
