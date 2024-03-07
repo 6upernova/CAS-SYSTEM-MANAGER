@@ -54,78 +54,41 @@
                 </tr>
                 
             </thead>
+            
         </table>
     </div>
     {% endfor %}    
 </section>
 
 <!--Create Grade Modal-->
-<div class="modal fade" id="createNewEvent" tabindex="-1" aria-labelledby="createNewEventLabel" aria-hidden="true">
+<div class="modal fade" id="createNewGrade" tabindex="-1" aria-labelledby="createNewGradeLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createNewEvent">Registrar Nuevo Curso: </h5>
+          <h5 class="modal-title" id="createNewGrade">Registrar Nuevo Curso: </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
   
         <div class="modal-body">
-          <form action="/create_new_grade" method="post" >
+          <form action="/create_new_grade/{{event['id']}}" method="post" >
   
             <!--Name label-->
             <div class="mb-3 ">
-              <label for="eventName" class="form-label">Nombre:</label>
+              <label for="gradeName" class="form-label">Nombre:</label>
               <div class="input-group">
-                <input type="text" class="form-control" name="eventName" id="eventName" placeholder="Ingrese nombre del Evento">
+                <input type="text" class="form-control" name="gradeName" id="gradeName" placeholder="Ingrese nombre del gradeo">
               </div>
               </div>
   
             <div class="mb-3 row">
               <!--Price label-->
-              <div class="col-6">
-                <label for="eventPrice" class="form-label">Precio tarjeta:</label>
-                <div class="input-group">
-                  <span class="input-group-text">$</span>
-                  <input type="number" class="form-control"  id="eventPrice" name="eventPrice" placeholder="Ingrese Monto" min="1" >
-                </div>
+              <label for="gradeSize" class="form-label">Tamaño del curso:</label>
+              <div class="input-group">
+                <input type="number" class="form-control" name="gradeSize" id="gradeSize">
               </div>
+            </div>
               
-                <!--Date label-->
-              <div class="col-6">
-                <div class="form-group">
-                  <label for="datepicker" style="margin-bottom:8px;">Fecha del evento:</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control" id="datepicker" name="datepicker" readonly>
-                    <div class="input-group-append">
-                      <span class="input-group-text">
-                        <i class="bi bi-calendar" ></i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="mb-3 row">
-              <!--Place label-->
-              <div class="col-6">
-                <label for="eventPlace" class="form-label">Lugar:</label>
-                  <div class="input-group">
-                  <select class="form-select" id="eventPlace" name="eventPlace">
-                      <option value="Smata">Smata</option>
-                      <option value="Sirio">Sirio</option>
-                  </select>
-                  </div>
-              </div>
-              <!--Type label-->
-              <div class="col-6">
-                <label for="eventType" class="form-label">Tipo de evento:</label>
-                <div class="input-group">
-                  <select class="form-select" id="eventType" name="eventType">
-                      <option value="Egresados">Egresados</option>
-                  </select>
-                  </div>
-              </div>
-            </div>
+            
           </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Crear</button>
@@ -134,7 +97,7 @@
     </div>
   </div>
   </div>
-  </div>
+  
 
 
 
