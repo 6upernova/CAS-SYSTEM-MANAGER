@@ -55,10 +55,10 @@
                       <!--Tables-->
                       <div class="table-responsive data-editable" style="border-radius: 10px; overflow: hidden;">
                         <table id="editableTable{{ loop.index }}" class="table table-hover">
-                          <caption>{{ grade['name'] }}</caption>
+                          
                           <thead style="vertical-align: middle;">
                             <tr>
-                              <th scope="col">Nombre egresado</th>
+                              <th scope="col" >Nombre egresado</th>
                               <th scope="col">Invitados</th>
                               <th scope="col">Colocados</th>
                               <th scope="col">Veg</th>
@@ -68,6 +68,45 @@
                               <th scope="col">Mesa N°</th>
                             </tr>
                           </thead>
+
+                          <tbody>
+                            {% for student in students_by_grade[grade['id']] %}
+                            
+                            <tr>
+                              <td>{{ student['name'] }}</td>
+                              <td>{{ student['guests'] }}</td>
+
+                              
+                              <td>
+                                {% if table in tables_by_student[student['id']]  %}
+                                  {% for table in tables_by_student[student['id']] %}
+                                    {{ student['guests'] - table['cant_guest'] }}
+                                  {% endfor %}
+                                {% else %}
+                                    {{ student['guests'] }}
+                                {% endif %}
+                              </td>
+                              
+                              <td>{{ student['vegetarians'] }}</td>
+                              <td>{{ student['celiac'] }}</td>
+                              <td>{{student['delivered'] }}</td>
+                              <td>{{student['charged']}}</td>
+
+                              
+                              <td>
+                                {% if table in tables_by_student[student['id']]  %}
+                                  {% for table in tables_by_student[student['id']] %}
+                                    {{table['number']}}
+                                  {% endfor %}
+                                {% else %}
+                                  0
+                                {% endif %}
+                              </td>
+                              
+                            </tr>
+                            
+                            {% endfor %} <!--Students endfor-->
+                          </tbody>
                         </table>
                       </div>
                     </div><!-- End Row -->
