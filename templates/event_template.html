@@ -80,10 +80,10 @@
                               <td>
                                 {% if table in tables_by_student[student['id']]  %}
                                   {% for table in tables_by_student[student['id']] %}
-                                    {{ student['guests'] - table['cant_guest'] }}
+                                    {{ student['guests'] - table['cant_guest'] }}/ {{student['guests']}}
                                   {% endfor %}
                                 {% else %}
-                                    {{ student['guests'] }}
+                                    0/{{student['guests']}}
                                 {% endif %}
                               </td>
                               
