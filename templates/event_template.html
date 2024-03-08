@@ -26,72 +26,63 @@
 
     <section class="section dashboard">
 
-    <!--Search bar -->
-    <div class="col-lg-12">
-      <form action="{{ url_for('events') }}" method="GET" class="mb-3">
-        <div class="input-group">
-          <input type="text" name="query" class="form-control" placeholder="Buscar evento por nombre" value="{{query}}">
-          <button type="submit" class="btn btn-primary">Buscar</button>
-        </div>
-      </form>
-    </div>
-
+      <!--Search bar -->
+      <div class="col-lg-12">
+        <form action="{{ url_for('events') }}" method="GET" class="mb-3">
+          <div class="input-group">
+            <input type="text" name="query" class="form-control" placeholder="Buscar evento por nombre" value="{{query}}">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+          </div>
+        </form>
+      </div>
+    
       <div class="row">
         <div class="accordion" id="sectionsAccordion">
           <!-- Section Accordion -->
+          {% for grade in grades %}
           <div class="accordion-item">
-            <h2 class="accordion-header" id="accordionHeader">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapse">
-                Curso Mameluco
+            <h2 class="accordion-header" id="accordionHeader{{ loop.index }}">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+                Curso {{ grade['name'] }}
               </button>
             </h2>
-            <div id="collapse" class="accordion-collapse collapse show" aria-labelledby="accordionHeader" data-bs-parent="#sectionsAccordion">
+            <div id="collapse{{ loop.index }}" class="accordion-collapse collapse show" aria-labelledby="accordionHeader{{ loop.index }}" data-bs-parent="#sectionsAccordion">
               <div class="accordion-body p-3">
                 <div class="row gy-3">
                   <!-- Left side columns -->
                   <div class="col-lg-8">
                     <div class="row">
-
-      <div class="row">
-        <div class="accordion" id="sectionsAccordion">
-          <!-- Section Accordion -->
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="accordionHeader">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapse">
-                Curso Mameluco
-              </button>
-            </h2>
-            <div id="collapse" class="accordion-collapse collapse show" aria-labelledby="accordionHeader" data-bs-parent="#sectionsAccordion">
-              <div class="accordion-body p-3">
-                <div class="row gy-3">
-                  <!-- Left side columns -->
-                  <div class="col-lg-8">
-                    <div class="row">
-
-    <!--Tables-->
-    {% for grade in grades %}
-    <div class="table-responsive data-editable" style="border-radius: 10px; overflow: hidden;">
-        <table id="editableTable" class="table table-hover ">
-            <caption>{{grade['name']}}</caption>
-            <thead style="vertical-align: middle;">
-                <tr>
-                    <th scope="col">Nombre egresado</th>
-                    <th scope="col">Invitados</th>
-                    <th scope="col">Colocados</th>
-                    <th scope="col">Veg</th>
-                    <th scope="col">Cel</th>
-                    <th scope="col">Entregadas</th>
-                    <th scope="col">Cobradas</th>
-                    <th scope="col">Mesa N°</th>
-                </tr>
-                
-            </thead>
-        </table>
-    </div>
-    {% endfor %}    
-</section>
-
-
+                      <!--Tables-->
+                      <div class="table-responsive data-editable" style="border-radius: 10px; overflow: hidden;">
+                        <table id="editableTable{{ loop.index }}" class="table table-hover">
+                          <caption>{{ grade['name'] }}</caption>
+                          <thead style="vertical-align: middle;">
+                            <tr>
+                              <th scope="col">Nombre egresado</th>
+                              <th scope="col">Invitados</th>
+                              <th scope="col">Colocados</th>
+                              <th scope="col">Veg</th>
+                              <th scope="col">Cel</th>
+                              <th scope="col">Entregadas</th>
+                              <th scope="col">Cobradas</th>
+                              <th scope="col">Mesa N°</th>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                    </div><!-- End Row -->
+                  </div><!-- End Left side columns -->
+                </div>
+              </div><!-- End Accordion Body -->
+            </div><!-- End Accordion Collapse -->
+          </div><!-- End Accordion Item -->
+          {% endfor %}
+        </div><!-- End Accordion -->
+      </div><!-- End row -->
+    </div><!-- End accordion -->
+    
+    </section><!-- End section -->
+    
 
 <!--Create Grade Modal-->
 <div class="modal fade" id="createNewGrade" tabindex="-1" aria-labelledby="createNewGradeLabel" aria-hidden="true">
