@@ -42,10 +42,3 @@ CREATE TABLE tables (
    
 );
 
-CREATE TABLE students_tables (
-    student_id INTEGER,
-    table_id INTEGER,
-    PRIMARY KEY (student_id, table_id),
-    FOREIGN KEY (student_id) REFERENCES students(id),
-    FOREIGN KEY (table_id) REFERENCES tables(id)
-);

@@ -106,8 +106,9 @@ def create_new_grade(event_id):
     grade_id = result['id']
 
     for i in range(size):
-        db.execute("INSERT INTO students (grade_id) VALUES (:grade_id)",
-                    grade_id=grade_id )
+        db.execute(f"INSERT INTO students (grade_id, name, guests, vegetarians,  celiac,  delivered, charged)"
+                    f" VALUES ({grade_id}, '', 0, 0, 0, 0, 0)")
+
     
     return redirect(url_for('show_event', event_id=event_id))
 

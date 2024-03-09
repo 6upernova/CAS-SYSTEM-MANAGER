@@ -37,20 +37,20 @@
       </div>
     
       <div class="row">
-        <div class="accordion" id="sectionsAccordion">
+        <div class="accordion col-lg-9" id="sectionsAccordion">
           <!-- Section Accordion -->
           {% for grade in grades %}
           <div class="accordion-item">
             <h2 class="accordion-header" id="accordionHeader{{ loop.index }}">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
                 Curso {{ grade['name'] }}
               </button>
             </h2>
-            <div id="collapse{{ loop.index }}" class="accordion-collapse collapse show" aria-labelledby="accordionHeader{{ loop.index }}" data-bs-parent="#sectionsAccordion">
+            <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="accordionHeader{{ loop.index }}" >
               <div class="accordion-body p-3">
                 <div class="row gy-3">
                   <!-- Left side columns -->
-                  <div class="col-lg-8">
+                  <div>
                     <div class="row">
                       <!--Tables-->
                       <div class="table-responsive data-editable" style="border-radius: 10px; overflow: hidden;">
@@ -117,6 +117,19 @@
           </div><!-- End Accordion Item -->
           {% endfor %}
         </div><!-- End Accordion -->
+        <div class="col-lg-3">
+          <div class="table-responsive data-editable table-container" style="border-radius: 10px; overflow: hidden;">
+          <h2 class="accordion-header" style="margin-bottom:1.64rem;">Mesas</h2>
+          <table id="tablesTable" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="colgroup" colspan="2">Mesa Nº</th>
+                  
+              </tr>
+            </thead>
+          </table>
+          </div>
+        </div>
       </div><!-- End row -->
     </div><!-- End accordion -->
     

@@ -813,6 +813,12 @@ h6 {
   cursor:pointer;
 }
 
+.table-container {
+  position: sticky;
+  top: 70px;
+  z-index: 1000; /* Puedes ajustar el valor según sea necesario */
+}
+
 
 /* Top Selling */
 .dashboard .top-selling {
