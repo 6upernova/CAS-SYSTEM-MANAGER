@@ -54,9 +54,9 @@
                     <div class="row">
                       <!--Tables-->
                       <div class="table-responsive data-editable" style="border-radius: 10px; overflow: hidden;">
-                        <table id="editableTable{{ loop.index }}" class="table table-hover">
+                        <table id="editableTable{{ loop.index }}" class="table table-hover table-bordered border-black" style="border-collapse: collapse; width: 100%;">
                           
-                          <thead style="vertical-align: middle;">
+                          <thead style="vertical-align: middle; border: 2px solid #000000; " class="table-primary">
                             <tr>
                               <th scope="col" >Nombre egresado</th>
                               <th scope="col">Invitados</th>
@@ -72,29 +72,29 @@
                           <tbody>
                             {% for student in students_by_grade[grade['id']] %}
                             
-                            <tr>
-                              <td>{{ student['name'] }}</td>
-                              <td>{{ student['guests'] }}</td>
+                            <tr data-row-id="{{ student['id'] }}">
+                              <td contenteditable="true">{{ student['name'] }}</td>
+                              <td contenteditable="true">{{ student['guests'] }}</td>
 
                               
                               <td>
-                                {% if table in tables_by_student[student['id']]  %}
+                                {% if student['id'] in tables_by_student and tables_by_student[student['id']]  %}
                                   {% for table in tables_by_student[student['id']] %}
-                                    {{ student['guests'] - table['cant_guest'] }}/ {{student['guests']}}
+                                    {{  table['cant_guest'] }}/{{student['guests']}}
                                   {% endfor %}
                                 {% else %}
                                     0/{{student['guests']}}
                                 {% endif %}
                               </td>
                               
-                              <td>{{ student['vegetarians'] }}</td>
-                              <td>{{ student['celiac'] }}</td>
-                              <td>{{student['delivered'] }}</td>
-                              <td>{{student['charged']}}</td>
+                              <td contenteditable="true">{{ student['vegetarians'] }}</td>
+                              <td contenteditable="true">{{ student['celiac'] }}</td>
+                              <td contenteditable="true">{{student['delivered'] }}</td>
+                              <td contenteditable="true">{{student['charged']}}</td>
 
                               
-                              <td>
-                                {% if table in tables_by_student[student['id']]  %}
+                              <td contenteditable="true">
+                                {% if student['id'] in tables_by_student and tables_by_student[student['id']]  %}
                                   {% for table in tables_by_student[student['id']] %}
                                     {{table['number']}}
                                   {% endfor %}
@@ -120,13 +120,30 @@
         <div class="col-lg-3">
           <div class="table-responsive data-editable table-container" style="border-radius: 10px; overflow: hidden;">
           <h2 class="accordion-header" style="margin-bottom:1.64rem;">Mesas</h2>
-          <table id="tablesTable" class="table table-hover">
-            <thead>
+          <table id="tablesTable" class="table table-hover table-bordered border-black">
+            <thead  style="vertical-align: middle; border: 2px solid #000000; " class="table-primary">
               <tr>
                 <th scope="colgroup" colspan="2">Mesa Nº</th>
+                
                   
               </tr>
             </thead>
+            <tbody>
+              {% for table in tables %}
+              <tr>
+                <td>
+                  {{table['number']}}
+                </td>
+
+                <td>
+                  {{table['cant_guest']}}/{{table['max_guest']}}
+                </td>
+
+              </tr>
+
+              {% endfor %}
+
+            </tbody>
           </table>
           </div>
         </div>

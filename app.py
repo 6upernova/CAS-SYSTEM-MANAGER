@@ -78,6 +78,7 @@ def show_event(event_id):
     result = db.execute("SELECT * FROM events WHERE id = :event_id", event_id =event_id)
     event = result[0]
     grades = db.execute("SELECT * FROM grade WHERE event_id = :event_id ", event_id = event_id )
+    tables = db.execute("SELECT * FROM tables")
     
     students_by_grade = {}
     tables_by_student = {}
@@ -87,10 +88,11 @@ def show_event(event_id):
         for student in students:
             tables_by_student[student['id']] = db.execute("SELECT * FROM tables WHERE guests_of = :student_id ", student_id = student['id'])
         
+        print(tables_by_student)
         
     
     
-    return render_template('event_template.html', event = event, grades = grades, students_by_grade = students_by_grade, tables_by_student = tables_by_student )
+    return render_template('event_template.html', event = event, grades = grades, tables = tables, students_by_grade = students_by_grade, tables_by_student = tables_by_student )
 
 @app.route('/create_new_grade/<event_id>', methods=['POST'])
 def create_new_grade(event_id):

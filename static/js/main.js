@@ -376,18 +376,7 @@ editMemberBtns.forEach(function(editMemberBtn) {
 
 })();
 
-(function(){
-  // Escuchar el evento 'input' en las celdas editables
-  document.querySelectorAll('#editableTable [contenteditable="true"]').forEach(function (cell) {
-    cell.addEventListener('input', function () {
-        // Obtener el texto actualizado
-        var newText = this.innerText;
 
-        // Realizar la lógica de guardado aquí (puedes enviar los datos al servidor si es necesario)
-        console.log('Nuevo valor:', newText);
-    });
-});
-})();
 
 (function(){
   
@@ -411,3 +400,37 @@ editMemberBtns.forEach(function(editMemberBtn) {
 
 })();
 
+(function(){
+  document.querySelectorAll('#editableTable{{ loop.index }} [contenteditable="true"]').forEach(function (cell) {
+    cell.addEventListener('input', function () {
+        var newText = this.innerText;
+        var rowId = this.closest('tr').dataset.rowId;
+        var tableId = this.closest('table').id;
+
+        saveData(tableId, rowId, this.cellIndex, newText);
+    });
+});
+
+function saveData(tableId, rowId, columnIndex, newText) {
+    fetch('/save_data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            tableId: tableId,
+            rowId: rowId,
+            columnIndex: columnIndex,
+            newText: newText,
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos guardados con éxito:', data);
+        })
+        .catch(error => {
+            console.error('Error al guardar los datos:', error);
+        });
+}
+
+})();
