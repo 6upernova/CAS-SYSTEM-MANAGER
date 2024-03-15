@@ -46,8 +46,8 @@
                 Curso {{ grade['name'] }}
               </button>
             </h2>
-            <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="accordionHeader{{ loop.index }}" >
-              <div class="accordion-body p-3">
+            <div id="collapse{{ loop.index }}" class="accordion-collapse collapse show" aria-labelledby="accordionHeader{{ loop.index }}" >
+              <div class="accordion-body p-3 ">
                 <div class="row gy-3">
                   <!-- Left side columns -->
                   <div>
@@ -72,9 +72,9 @@
                           <tbody>
                             {% for student in students_by_grade[grade['id']] %}
                             
-                            <tr data-row-id="{{ student['id'] }}">
-                              <td contenteditable="true">{{ student['name'] }}</td>
-                              <td contenteditable="true">{{ student['guests'] }}</td>
+                            <tr data-row-id="{{ student['id'] }}" >
+                              <td contenteditable="true" class="editable-cell" oninput="alignCursor(this)">{{ student['name'] }}</td>
+                              <td contenteditable="true" class="editable-cell" oninput="alignCursor(this)">{{ student['guests'] }}</td>
 
                               
                               <td>
@@ -93,13 +93,11 @@
                               <td contenteditable="true">{{student['charged']}}</td>
 
                               
-                              <td contenteditable="true">
+                              <td contenteditable="true" class="editable-cell" oninput="alignCursor(this)">
                                 {% if student['id'] in tables_by_student and tables_by_student[student['id']]  %}
                                   {% for table in tables_by_student[student['id']] %}
                                     {{table['number']}}
                                   {% endfor %}
-                                {% else %}
-                                  0
                                 {% endif %}
                               </td>
                               

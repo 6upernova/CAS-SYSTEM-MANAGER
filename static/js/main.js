@@ -401,6 +401,7 @@ editMemberBtns.forEach(function(editMemberBtn) {
 })();
 
 (function(){
+  // Funcion para poder editar las celdas
   document.querySelectorAll('#editableTable{{ loop.index }} [contenteditable="true"]').forEach(function (cell) {
     cell.addEventListener('input', function () {
         var newText = this.innerText;
@@ -412,6 +413,7 @@ editMemberBtns.forEach(function(editMemberBtn) {
 });
 
 function saveData(tableId, rowId, columnIndex, newText) {
+  // Funcion para guardar los datos individualmente de cada celda
     fetch('/save_data', {
         method: 'POST',
         headers: {
