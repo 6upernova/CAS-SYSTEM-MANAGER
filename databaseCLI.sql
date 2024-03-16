@@ -27,6 +27,7 @@ CREATE TABLE students (
     celiac INTEGER,
     delivered INTEGER,
     charged INTEGER,
+    placed INTEGER,
 
     PRIMARY KEY("id" AUTOINCREMENT),
     FOREIGN KEY("grade_id") REFERENCES "grade" ("id")
@@ -39,7 +40,17 @@ CREATE TABLE tables (
     guests_of INTEGER,
     max_guest INTEGER,
     PRIMARY KEY("id" AUTOINCREMENT),
-    FOREIGN KEY("guests_of") REFERENCES "students" ("id")
    
 );
 
+CREATE TABLE students_tables (
+    id INTEGER,
+    student_id INTEGER,
+    table_id INTEGER,
+    table_number INTEGER,
+    cant_guest_of INTEGER,
+
+    FOREIGN KEY(student_id) REFERENCES students(id),
+    FOREIGN KEY(table_id) REFERENCES tables(id),
+    PRIMARY KEY("id" AUTOINCREMENT)
+);
