@@ -118,32 +118,33 @@ def create_new_grade(event_id):
 
 
 def save_cell_data(): 
-	"""
-	Function to uplotad data from cell
-	"""
-	
-	# Get cell data
-	cell_data = request.get_json()
-	row_id = cell_data['rowId']
-	column_index = cell_data['columnIndex']
-	new_data = cell_data['newData']
-	
-	# Get grade id from student
-	result = db.execute('SELECT grade_id FROM students WHERE id= :row_id' , row_id=row_id)
-	result = result['0']
-	grade_id = result['id']
-	
-	# Get column name
-	column_name = get_column_name(column_index)
-	
-	# Save cell data
-	if column_name != "tables":
-	    db.execute('INSERT students SET :column_name = :new_data WHERE id = :row_id',
-		column_name=column_name, new_data=new_data, row_id=row_id)
-	
-	# Logic to manage tables
-	else:  
+    """
+    Function to upload data from cell
+    """
+    
+    # Get cell data
+    cell_data = request.get_json()
+    row_id = cell_data['rowId']
+    column_index = cell_data['columnIndex']
+    new_data = cell_data['newData']
+    
+    # Get grade id from student
+    result = db.execute('SELECT grade_id FROM students WHERE id= :row_id' , row_id=row_id)
+    result = result['0']
+    grade_id = result['id']
+    
+    # Get column name
+    column_name = get_column_name(column_index)
+    
+    # Save cell data
+    if column_name != "tables":
+        db.execute('INSERT students SET :column_name = :new_data WHERE id = :row_id',
+                   column_name=column_name, new_data=new_data, row_id=row_id)
+    
+    # Logic to manage tables
+    else:  
         manage_tables(row_id, new_data)
+
 
 
 def get_column_name(column_index):
@@ -199,13 +200,12 @@ def compare_tables(new_list, old_list):
 
 
 def get_student_tables(student_id):
-    pass
+    # Realiza la consulta para obtener los números de mesa asociados con el ID del estudiante
+    rows = db.execute('SELECT table_number FROM students_tables WHERE student_id = :student_id', student_id=student_id)
+    table_numbers = [row['table_number'] for row in rows]
 
-def delete_table(student_id, table_number):
-    pass
+    return table_numbers
 
-def add_table(student_id, table_number):
-    pass
 
 def get_table_id(student_id, number):
     """
@@ -215,9 +215,56 @@ def get_table_id(student_id, number):
     result = db.execute('SELECT table_id FROM students_tables WHERE student_id = :student_id AND table_number = :number',
                 student_id=student_id, number=number)
     if result:
-        return result[0] 
+        return result[0]
     else:
         return None
+
+
+def delete_table(student_id, table_id):
+    # Busco la tabla a eliminar
+    table = db.execute('SELECT * FROM tables WHERE id = :table_id', table_id=table_id)[0]
+    
+    # Busco el id de la tabla relacional entre la mesa y el estudiante
+    student_table_id = db.execute('SELECT id FROM students_tables WHERE student_id = :student_id AND table_id = :table_id', student_id=student_id, table_id=table_id)[0]['id']
+    
+    # Busco la cantidad de invitados a eliminar de la tabla y de los colocados del estudiante
+    cant_guest_of_student_in_table = db.execute('SELECT cant_guest_of FROM students_tables WHERE student_id = :student_id AND table_id = :table_id', student_id=student_id, table_id=table_id)[0]['cant_guest_of']
+    
+    # Quitando la cantidad colocados que habia en esa mesa del estudiante
+    db.execute('UPDATE students SET placed = (placed - :cant_guest_of_student_in_table) WHERE id = :student_id', student_id=student_id, cant_guest_of_student_in_table=cant_guest_of_student_in_table)
+    
+    # Chequeo si la mesa ya se encuentra asignada a otro alumno ademas del que se elimino
+    result3 = db.execute('SELECT student_id FROM students_tables WHERE table_id = :table_id', table_id=table_id)
+    if len(result3) > 0:
+        # Como hay más de un alumno asignado a esa mesa no se elimina la mesa sino que se le quitan la cantidad de invitados de ese alumno
+        db.execute('UPDATE tables SET cant_guest = (cant_guest - :cant_guest_of_student_in_table ) WHERE id = :table_id ', table_id=table_id, cant_guest_of_student_in_table=cant_guest_of_student_in_table)
+        
+        # Se elimina el registro de students_tables
+        db.execute('DELETE FROM students_tables WHERE id = :student_table_id', student_table_id=student_table_id)
+    else:
+        # Como no hay más de un alumno asignado a esa mesa, directamente se elimina la mesa
+        # Se elimina el registro de students_tables
+        db.execute('DELETE FROM students_tables WHERE id = :student_table_id', student_table_id=student_table_id)
+        
+        # Se elimina la mesa
+        db.execute('DELETE FROM tables WHERE id = :table_id', table_id=table_id)
+
+        
+        
+
+    
+    
+    
+    
+    
+    
+    
+    
+def add_table(student_id, table_id):
+    pass    
+    
+    
+
 
 
     
