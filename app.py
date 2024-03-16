@@ -23,17 +23,11 @@ app.secret_key = 'a1b2c3d4e5f6g7h8i9j0'
 db = SQL("sqlite:///manager.db")
 
 
-
-
-
 @app.route('/')
 def home():
     return redirect(url_for('events'))
     
-
-
-
-
+    
 @app.route("/events")
 def events():
     """Show events"""
@@ -72,6 +66,7 @@ def create_new_event():
     # Redirigir al usuario a la página de índice
     return redirect(url_for('events'))
 
+
 @app.route('/event/<event_id>')
 def show_event(event_id):
     # fetch data
@@ -94,6 +89,7 @@ def show_event(event_id):
     
     return render_template('event_template.html', event = event, grades = grades, tables = tables, students_by_grade = students_by_grade, tables_by_student = tables_by_student )
 
+
 @app.route('/create_new_grade/<event_id>', methods=['POST'])
 def create_new_grade(event_id):
     name = request.form['gradeName']
@@ -113,8 +109,6 @@ def create_new_grade(event_id):
 
     
     return redirect(url_for('show_event', event_id=event_id))
-
-
 
 
 def save_cell_data(): 
@@ -159,7 +153,6 @@ def get_column_name(column_index):
     return switcher.get(column_index, "Invalid column id")
 
 
-
 def manage_tables(student_id, new_data):
     """
     Function to create and manage tables
@@ -171,41 +164,82 @@ def manage_tables(student_id, new_data):
     # Given a string of tables, returns a list with every table
     new_table_numbers = [int(num.strip()) for num in new_data.split(',')]
 
-    to_delete, to_add = compare_tables(new_table_numbers, old_table_numbers)
+    to_delete, to_create, to_analize = compare_tables(new_table_numbers, old_table_numbers, student_id)
 
+    # Tables to delete
     for table_number in to_delete:
-        get_table_id(student_id, table)
+        table_id = get_table_id(student_id, table)
         delete_table(table_id)
     
-    for table_number in to_add:
-        pass
+    # Tables to analize
+    for table_number in to_create:
+
+        # Store table ID
+        table_id =  get_table_id(student_id, table)
+
+        # Calculate guests to place
+        result_guests = db.execute('SELECT guests, placed FROM students WHERE id = ?', (table_id))
+        result_guests = result_guests[0]
+        guests, placed = result_guests
+
+        cant_guests = guests - placed
+        # Create a table
+        # Place student guests
+        # Add the placed guests to the variable placed
+        # Add the placed guests to the cant_guest_off variable
+
+    # Tables to create  
+    for table_number in to_analize:
+
+        # Store table ID
+        table_id =  get_table_id(student_id, table)
+
+        # Calculate guests to place
+        result_guests = db.execute('SELECT guests, placed FROM students WHERE id = ?', (table_id))
+        result_guests = result_guests[0]
+        guests, placed = result_guests
+
+        cant_guests = guests - placed
+
+        # Get the current and max guests for the table
+        result = db.execute('SELECT cant_guest, max_guest FROM tables WHERE id = ?', (table_id,))
+        result = result[0]
+        if result:
+            current_guests, max_guests = result
+            if current_guests < max_guests:
+                # Place student guests
+
+            else:
+                print("ERROR: Table is full.")
 
 
 def compare_tables(new_list, old_list):
     """
     Compare the tables from the old and new lists
-    Returns two lists. One with the new added tables and another one with the deleted tables
+    Returns three lists. One to create new tables, one to delete tables, and other to analize later.
     """
 
     # Convert lists to sets for easier comparison
     new_set = set(new_list)
     old_set = set(old_list)
     
-    # Find tables to delete and tables to add
+    # Find tables to delete and tables to analize
     to_delete = list(old_set - new_set)
-    to_add = list(new_set - old_set)
-    
-    return to_delete, to_add
+    to_analize = list(new_set - old_set)
+    to_create = list()
 
+    # Find tables to create
+    for table_number in to_analize:
 
-def get_student_tables(student_id):
-    pass
+        # Check if the table exists in the db
+        table_id = get_table_id(student_id, table_number)
 
-def delete_table(student_id, table_number):
-    pass
+        # If table is not in the db then add to the create list
+        if not table_id:
+            to_create.append(table_number
 
-def add_table(student_id, table_number):
-    pass
+    return to_delete, to_create, to_create
+
 
 def get_table_id(student_id, number):
     """
@@ -219,6 +253,15 @@ def get_table_id(student_id, number):
     else:
         return None
 
+
+def get_student_tables(student_id):
+    pass
+
+def delete_table(table_id):
+    pass
+
+def add_table(table_id):
+    pass
 
     
 
