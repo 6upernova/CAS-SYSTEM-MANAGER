@@ -117,6 +117,71 @@ def create_new_grade(event_id):
 
 
 
+def save_cell_data(): 
+	
+	"""
+	Function to uplotad data from cell
+	"""
+	
+	# Get cell data
+	cell_data = request.get_json()
+	row_id = cell_data['rowId']
+	column_index = cell_data['columnIndex']
+	new_data = cell_data['newData']
+	
+	# Get grade id from student
+	result = db.execute('SELECT grade_id FROM students WHERE id= :row_id' , row_id=row_id)
+	result = result['0']
+	grade_id = result['id']
+	
+	# Get column name
+	column_name = get_column_name(column_index)
+	
+	# Save cell data
+	if column_name != tables:
+	    db.execute('INSERT students SET :column_name = :new_data WHERE id = :row_id',
+		column_name=column_name, new_data=new_data, row_id=row_id)
+	
+	# Logic to manage tables
+	else: 
+        new_table_numbers = [int(num.strip()) for num in new_text.split(',')]
+        old_table_numbers = NULL 
+        manage_tables(student_id, new_table_numbers, old_table_numbers)
+
+	
+		
+		
+		
+def get_column_name(column_index):
+    switcher = {
+        0: "name",
+        1: "guests",
+        3: "vegetarians",
+        4: "celiac",
+        5: "delivered",
+        6: "charged",
+        7: "tables"
+    }
+    return switcher.get(column_index, "Invalid column id")
+
+
+        
+        
+
+def manage_tables(student_id, )
+
+def compare_tables(new_table_numbers, old_table_numbers):
+    
+
+def
+    
+
+        
+    
+
+
+
+
     
 
 
