@@ -118,7 +118,6 @@ def create_new_grade(event_id):
 
 
 def save_cell_data(): 
-	
 	"""
 	Function to uplotad data from cell
 	"""
@@ -138,20 +137,15 @@ def save_cell_data():
 	column_name = get_column_name(column_index)
 	
 	# Save cell data
-	if column_name != tables:
+	if column_name != "tables":
 	    db.execute('INSERT students SET :column_name = :new_data WHERE id = :row_id',
 		column_name=column_name, new_data=new_data, row_id=row_id)
 	
 	# Logic to manage tables
-	else: 
-        new_table_numbers = [int(num.strip()) for num in new_text.split(',')]
-        old_table_numbers = NULL 
-        manage_tables(student_id, new_table_numbers, old_table_numbers)
+	else:  
+        manage_tables(row_id, new_data)
 
-	
-		
-		
-		
+
 def get_column_name(column_index):
     switcher = {
         0: "name",
@@ -165,15 +159,67 @@ def get_column_name(column_index):
     return switcher.get(column_index, "Invalid column id")
 
 
-        
-        
 
-def manage_tables(student_id, )
+def manage_tables(student_id, new_data):
+    """
+    Function to create and manage tables
+    """
 
-def compare_tables(new_table_numbers, old_table_numbers):
+    # Get student tables
+    old_table_numbers = get_student_tables(student_id)
     
+    # Given a string of tables, returns a list with every table
+    new_table_numbers = [int(num.strip()) for num in new_data.split(',')]
 
-def
+    to_delete, to_add = compare_tables(new_table_numbers, old_table_numbers)
+
+    for table_number in to_delete:
+        get_table_id(student_id, table)
+        delete_table(table_id)
+    
+    for table_number in to_add:
+        pass
+
+
+def compare_tables(new_list, old_list):
+    """
+    Compare the tables from the old and new lists
+    Returns two lists. One with the new added tables and another one with the deleted tables
+    """
+
+    # Convert lists to sets for easier comparison
+    new_set = set(new_list)
+    old_set = set(old_list)
+    
+    # Find tables to delete and tables to add
+    to_delete = list(old_set - new_set)
+    to_add = list(new_set - old_set)
+    
+    return to_delete, to_add
+
+
+def get_student_tables(student_id):
+    pass
+
+def delete_table(student_id, table_number):
+    pass
+
+def add_table(student_id, table_number):
+    pass
+
+def get_table_id(student_id, number):
+    """
+    Given the student_id and the table number return the table_id
+    """
+
+    result = db.execute('SELECT table_id FROM students_tables WHERE student_id = :student_id AND table_number = :number',
+                student_id=student_id, number=number)
+    if result:
+        return result[0] 
+    else:
+        return None
+
+
     
 
         
